@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<style>
+div.items {
+    position       : relative;
+    width          : 30px;
+    height         : 27px;
+    border         : 3px solid #000000;
+    text-align     : center;
+    vertical-align : bottom;
+    margin         : 2px;
+}
+</style>
+
+<body bgcolor="#e0c0c0">
+
+<h1>Numbrix</h1>
+<button onclick="resetTable()">Reset</button>
+<button onclick="clearTable()">Clear</button>
+<button onclick="hint()">Hint</button>
+<div> </div>
+
+<table style="width:100px"
+  <tr>
+    <td> <div class="items" id="item_1_1"> </div></td>
+    <td> <div class="items" id="item_1_2"> </div></td>
+    <td> <div class="items" id="item_1_3"> </div></td>
+    <td> <div class="items" id="item_1_4"> </div></td>
+    <td> <div class="items" id="item_1_5"> </div></td>
+    <td> <div class="items" id="item_1_6"> </div></td>
+    <td> <div class="items" id="item_1_7"> </div></td>
+    <td> <div class="items" id="item_1_8"> </div></td>
+  </tr>
+  <tr>
+    <td> <div class="items" id="item_2_1"> </div></td>
+    <td> <div class="items" id="item_2_2"> </div></td>
+    <td> <div class="items" id="item_2_3"> </div></td>
+    <td> <div class="items" id="item_2_4"> </div></td>
+    <td> <div class="items" id="item_2_5"> </div></td>
+    <td> <div class="items" id="item_2_6"> </div></td>
+    <td> <div class="items" id="item_2_7"> </div></td>
+    <td> <div class="items" id="item_2_8"> </div></td>
+  </tr>
+  <tr>
+    <td> <div class="items" id="item_3_1"> </div></td>
+    <td> <div class="items" id="item_3_2"> </div></td>
+    <td> <div class="items" id="item_3_3"> </div></td>
+    <td> <div class="items" id="item_3_4"> </div></td>
+    <td> <div class="items" id="item_3_5"> </div></td>
+    <td> <div class="items" id="item_3_6"> </div></td>
+    <td> <div class="items" id="item_3_7"> </div></td>
+    <td> <div class="items" id="item_3_8"> </div></td>
+  </tr>
+  <tr>
+    <td> <div class="items" id="item_4_1"> </div></td>
+    <td> <div class="items" id="item_4_2"> </div></td>
+    <td> <div class="items" id="item_4_3"> </div></td>
+    <td> <div class="items" id="item_4_4"> </div></td>
+    <td> <div class="items" id="item_4_5"> </div></td>
+    <td> <div class="items" id="item_4_6"> </div></td>
+    <td> <div class="items" id="item_4_7"> </div></td>
+    <td> <div class="items" id="item_4_8"> </div></td>
+  </tr>
+  <tr>
+    <td> <div class="items" id="item_5_1"> </div></td>
+    <td> <div class="items" id="item_5_2"> </div></td>
+    <td> <div class="items" id="item_5_3"> </div></td>
+    <td> <div class="items" id="item_5_4"> </div></td>
+    <td> <div class="items" id="item_5_5"> </div></td>
+    <td> <div class="items" id="item_5_6"> </div></td>
+    <td> <div class="items" id="item_5_7"> </div></td>
+    <td> <div class="items" id="item_5_8"> </div></td>
+  </tr>
+  <tr>
+    <td> <div class="items" id="item_6_1"> </div></td>
+    <td> <div class="items" id="item_6_2"> </div></td>
+    <td> <div class="items" id="item_6_3"> </div></td>
+    <td> <div class="items" id="item_6_4"> </div></td>
+    <td> <div class="items" id="item_6_5"> </div></td>
+    <td> <div class="items" id="item_6_6"> </div></td>
+    <td> <div class="items" id="item_6_7"> </div></td>
+    <td> <div class="items" id="item_6_8"> </div></td>
+  </tr>
+  <tr>
+    <td> <div class="items" id="item_7_1"> </div></td>
+    <td> <div class="items" id="item_7_2"> </div></td>
+    <td> <div class="items" id="item_7_3"> </div></td>
+    <td> <div class="items" id="item_7_4"> </div></td>
+    <td> <div class="items" id="item_7_5"> </div></td>
+    <td> <div class="items" id="item_7_6"> </div></td>
+    <td> <div class="items" id="item_7_7"> </div></td>
+    <td> <div class="items" id="item_7_8"> </div></td>
+  </tr>
+  <tr>
+    <td> <div class="items" id="item_8_1"> </div></td>
+    <td> <div class="items" id="item_8_2"> </div></td>
+    <td> <div class="items" id="item_8_3"> </div></td>
+    <td> <div class="items" id="item_8_4"> </div></td>
+    <td> <div class="items" id="item_8_5"> </div></td>
+    <td> <div class="items" id="item_8_6"> </div></td>
+    <td> <div class="items" id="item_8_7"> </div></td>
+    <td> <div class="items" id="item_8_8"> </div></td>
+  </tr>
+</table>
+</body>
+
+<script>
+
+MAX_ROWS=5;//8;
+MAX_COLS=5;//8;
+
+UP=0;
+DOWN=1;
+RIGHT=3;
+LEFT=4;
+
+MAXNUMBER     = 81;
+directionArray =[UP,DOWN,RIGHT,LEFT];
+
+// dump out text
+function debug(outputText) {
+  window.alert(outputText);
+}
+
+// store the itemValue at row,col
+function setItem(row, col, itemValue) {
+  id="item_"+row+"_"+col;
+  document.getElementById(id).innerHTML=itemValue;
+}
+
+// store the item using the set record
+function setItemElement(item){
+  id="item_"+item.row+"_"+item.col;
+  document.getElementById(id).innerHTML=item.value;
+}
+
+function setItemAt(loc,value){
+  id="item_"+loc.row+"_"+loc.col;
+  document.getElementById(id).innerHTML=value;
+  //debug("setItemAt"+id+" "+value);
+}
+
+// return the item at the row,col
+function getItemAt(row, col){
+  var id="item_"+row+"_"+col;
+  var value = document.getElementById(id).innerText;
+  return value;
+}
+
+function hint() {
+  debug("Hint");
+}
+
+// sets all of the elements to " "
+function clearTable() {
+  for (row=1;row <= MAX_ROWS; row++) {
+    for (col=1; col <= MAX_COLS; col++){
+      setItem(row,col," ");
+    }
+  }
+}
+
+// random routines
+// These are for the initial placement and not for directions
+function pickRandomRow(){
+  row= 1 + parseInt(Math.random() * (MAX_ROWS -1));
+  return row;
+}
+
+function pickRandomCol(){
+  col= 1 + parseInt(Math.random() * (MAX_COLS -1));
+  return col;
+}
+
+// These are for moving in a direction
+// they act on a loc but DO NOT ERROR CHECK BOUNDS
+function goUp(loc){
+  //debug("go up called with "+loc.row+" "+loc.col);
+  var newLoc = {row:loc.row-1,col:loc.col};
+  //debug("go up with "+newLoc.row+" "+newLoc.col)
+  return newLoc;
+}
+function goDown(loc){
+  var newLoc = {row:loc.row+1,col:loc.col};
+  return newLoc;
+}
+function goLeft(loc){
+  var newLoc = {row:loc.row,col:loc.col-1};
+  return newLoc;
+}
+function goRight(loc){
+  var newLoc = {row:loc.row,col:loc.col+1};
+  return newLoc;
+}
+
+// Range checking routines
+function colInRange(col){
+  return (col > 0) && (col<=MAX_COLS);
+}
+
+function rowInRange(row){
+  return (row > 0) && (row<=MAX_ROWS);
+}
+
+function notOccupied(row,col){
+  var item=getItemAt(row,col);
+  //debug("testing "+row+","+col+"["+item+"]");
+  if (item.length == "") {
+    return true;
+  } else {
+    //debug("occupied");
+    return false;
+  }
+
+}
+
+function randomizeDirectionArray(){
+  //debug("randomizeDirectionArray:todo");
+}
+
+function iterate(row, col, number) {
+
+var newLoc={row:row,col:col};
+
+debug("Calling "+number+" at "+row+","+col);
+// only process if we are in range
+// and we are not occupied
+if (rowInRange(row) &&
+    colInRange(col)&&
+    notOccupied(row,col)){
+
+    if (number === MAXNUMBER){
+      debug("success");
+      return true;
+    }
+    // we have a valid position and we didn't have
+    // success yet, so we need to keep iterating.
+    else {
+      // store this number
+      setItemAt(newLoc,number);
+
+      // let's look fot the next number now
+      number=number + 1;
+
+      // make sure that the direction array is
+      // good and random
+      randomizeDirectionArray();
+
+//todo how to evaluate loc record versus row,col
+      // loop through all directions
+      for (direction=0;direction<4;direction++){
+        //debug("testing direction "+direction);
+        switch (directionArray[direction]){
+          case UP:
+            newLoc=goUp({row:row,col:col});
+       iterate(newLoc.row,newLoc.col,number);
+            break;
+          case DOWN:
+            newLoc=goDown({row:row,col:col});
+       iterate(newLoc.row,newLoc.col,number);
+            break;
+          case LEFT:
+            newLoc=goLeft({row:row,col:col});
+       iterate(newLoc.row,newLoc.col,number);
+            break;
+          case RIGHT:
+            newLoc=goRight({row:row,col:col});
+       iterate(newLoc.row,newLoc.col,number);
+            break;
+          default:
+            newLoc=goRight();
+            break;
+          } // of switch statement
+          debug("end of switch, callling with "+newLoc.row+" "+newLoc.col+" "+number);
+
+        } // of all directions
+        debug("end of loop"+number);
+    }
+  } // in range
+//else {
+  //debug("not in range");
+//}
+debug("ending iterate with "+number);
+} // end of iterate()
+
+function resetTable() {
+  clearTable();
+  row=2;//pickRandomRow();
+  col=4;//pickRandomCol();
+  debug("resetTable "+row+" "+col);
+
+  iterate(row,col,1);
+
+  //setItem(row,col,69);
+}
+
+//////////// Main /////////////////////////////
+  // Clear the table
+  clearTable();
+
+  // reset the table and wait for input
+  //resetTable();
+
+debug("waiting for input");
+</script>
+
+</body>
+</html>
